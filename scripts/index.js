@@ -1,15 +1,23 @@
+import path from "node:path"
+import fs from "fs-extra"
 import { Octokit } from "octokit"
-import { marked } from "marked";
-import path, { join } from "node:path";
-import fs from 'node:fs'
+import { marked } from "marked"
 
 const TEMPLATES_DIR = 'templates'
 const OUTPUT_DIR = 'public'
 
 const octokit = new Octokit({
-  auth: process.env.TOKEN, // GitHub Action
-  // auth: '', // dev
+  auth: process.env.TOKEN,
 });
+
+function initOutputDir() {
+  if (fs.existsSync(OUTPUT_DIR)) {
+    fs.rmSync(OUTPUT_DIR, {recursive: true})
+  }
+  fs.mkdirSync(OUTPUT_DIR)
+
+  fs.copySync(path.join(TEMPLATES_DIR, 'css'), path.join(OUTPUT_DIR, 'css'))
+}
 
 async function getIssues() {
   const response = await octokit.request("GET /repos/liangpengyv/git-blog/issues")
@@ -30,7 +38,6 @@ function loadTemplate(tempalteName) {
 }
 
 function saveHtml(content, filename) {
-  if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR)
   fs.writeFileSync(path.join(OUTPUT_DIR, filename), content, 'utf-8')
 }
 
@@ -56,6 +63,7 @@ function generatePosts(posts) {
 }
 
 async function main() {
+  initOutputDir()
   const issues = await getIssues()
   const posts = convertPosts(issues)
   generateIndex(posts)

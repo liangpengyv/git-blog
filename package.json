@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/liangpengyv/git-blog#readme",
   "dependencies": {
+    "fs-extra": "^11.2.0",
     "marked": "^13.0.2",
     "octokit": "^4.0.2"
   }
