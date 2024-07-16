@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import path from "node:path"
 import fs from "fs-extra"
 import { Octokit } from "octokit"
@@ -6,13 +7,12 @@ import { marked } from "marked"
 const TEMPLATES_DIR = 'templates'
 const OUTPUT_DIR = 'public'
 
-const octokit = new Octokit({
-  auth: process.env.TOKEN,
-});
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+console.log('读取到的 GITHUB_TOKEN：', process.env.GITHUB_TOKEN)
 
 function initOutputDir() {
   if (fs.existsSync(OUTPUT_DIR)) {
-    fs.rmSync(OUTPUT_DIR, {recursive: true})
+    fs.rmSync(OUTPUT_DIR, { recursive: true })
   }
   fs.mkdirSync(OUTPUT_DIR)
 
