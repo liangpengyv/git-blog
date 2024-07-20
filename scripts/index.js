@@ -3,12 +3,13 @@ import path from "node:path"
 import fs from "fs-extra"
 import { Octokit } from "octokit"
 import { marked } from "marked"
+import express from 'express'
+import open from 'open'
 
 const TEMPLATES_DIR = 'templates'
 const OUTPUT_DIR = 'public'
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-console.log('读取到的 GITHUB_TOKEN：', process.env.GITHUB_TOKEN)
 
 function initOutputDir() {
   if (fs.existsSync(OUTPUT_DIR)) {
@@ -62,12 +63,24 @@ function generatePosts(posts) {
   });
 }
 
+function runServer() {
+  const app = express()
+  const port = 3000
+  app.use(express.static(OUTPUT_DIR))
+  app.listen(port, () => {
+    console.log(`Local server is running, please visit http://localhost:${port}`)
+    open(`http://localhost:${port}`)
+  })
+}
+
 async function main() {
+  console.log('Generating...')
   initOutputDir()
   const issues = await getIssues()
   const posts = convertPosts(issues)
   generateIndex(posts)
   generatePosts(posts)
+  runServer()
 }
 
 main().catch(console.error)
