@@ -11,6 +11,24 @@ const OUTPUT_DIR = 'public'
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
+async function getIssuesTotalCount(owner, repo) {
+  const query = `
+  query($owner: String!, $repo: String!) {
+    repository(owner: $owner, name: $repo) {
+      issues {
+        totalCount
+      }
+    }
+  }
+`;
+  const variables = {
+    owner,
+    repo,
+  };
+  const response = await octokit.graphql(query, variables)
+  return response.repository.issues.totalCount
+}
+
 function initOutputDir() {
   if (fs.existsSync(OUTPUT_DIR)) {
     fs.rmSync(OUTPUT_DIR, { recursive: true })
@@ -75,6 +93,7 @@ function runServer() {
 
 async function main() {
   console.log('Generating...')
+  console.log('totalCount: ', await getIssuesTotalCount('liangpengyv', 'git-blog'))
   initOutputDir()
   const issues = await getIssues()
   const posts = convertPosts(issues)
