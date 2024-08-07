@@ -42,7 +42,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Generate content
-        run: echo ${{ secrets.GITHUB_TOKEN }} && npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # 使用 GitHub Actions 内嵌的 Token
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
