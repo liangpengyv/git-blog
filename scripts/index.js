@@ -13,14 +13,14 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 
 async function getIssuesTotalCount(owner, repo) {
   const query = `
-  query($owner: String!, $repo: String!) {
-    repository(owner: $owner, name: $repo) {
-      issues {
-        totalCount
+    query($owner: String!, $repo: String!) {
+      repository(owner: $owner, name: $repo) {
+        issues {
+          totalCount
+        }
       }
     }
-  }
-`
+  `
   const variables = {
     owner,
     repo,
@@ -67,12 +67,12 @@ function generateIndex(posts) {
   const postListHtml = posts
     .map(
       (post) => `
-    <li>
-      <a href="${post.title}.html">
-        ${post.title}
-      </a>
-    </li>
-  `,
+        <li>
+          <a href="${post.title}.html">
+            ${post.title}
+          </a>
+        </li>
+      `,
     )
     .join('\n')
   const htmlContent = template.replace('{{posts}}', postListHtml)
