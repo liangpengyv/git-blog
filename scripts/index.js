@@ -112,7 +112,7 @@ async function main() {
   const posts = convertPosts(issues)
   generateIndex(posts)
   generatePosts(posts)
-  runServer()
+  if (process.env.NODE_ENV === 'development') runServer()
 }
 
 main().catch(console.error)

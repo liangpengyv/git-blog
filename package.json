@@ -8,7 +8,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=development node scripts/index",
+    "build": "NODE_ENV=production node scripts/index"
   },
   "repository": {
     "type": "git",
