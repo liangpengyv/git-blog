@@ -45,12 +45,32 @@ async function getIssues() {
   return response.data
 }
 
-function convertPosts(issues) {
-  const posts = issues.map((issue) => {
-    const title = issue.title
-    const content = marked(issue.body)
-    return { title, content }
-  })
+async function getIssueComments(issueNumber) {
+  const response = await octokit.request(
+    'GET /repos/{owner}/{repo}/issues/{issue_number}/comments',
+    {
+      owner: 'liangpengyv',
+      repo: 'git-blog',
+      issue_number: issueNumber,
+    },
+  )
+  return response.data
+}
+
+async function convertPosts(issues) {
+  const posts = []
+  for (const issue of issues) {
+    const commentArr = await getIssueComments(issue.number)
+    posts.push({
+      title: issue.title,
+      content: marked(issue.body),
+      comments: commentArr.map((comment) => ({
+        content: comment.body,
+        avatar: comment.user.avatar_url,
+        username: comment.user.login,
+      })),
+    })
+  }
   return posts
 }
 
@@ -85,6 +105,12 @@ function generatePosts(posts) {
     const htmlContent = template
       .replace('{{title}}', post.title)
       .replace('{{content}}', post.content)
+      .replace(
+        '{{comments}}',
+        post.comments
+          .map((comment) => marked(comment.content))
+          .join('\n<br />'),
+      )
     saveHtml(htmlContent, post.title + '.html')
   })
 }
@@ -109,7 +135,7 @@ async function main() {
   )
   initOutputDir()
   const issues = await getIssues()
-  const posts = convertPosts(issues)
+  const posts = await convertPosts(issues)
   generateIndex(posts)
   generatePosts(posts)
   if (process.env.NODE_ENV === 'development') runServer()
