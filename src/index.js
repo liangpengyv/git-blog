@@ -141,4 +141,7 @@ async function main() {
   if (process.env.NODE_ENV === 'development') runServer()
 }
 
-main().catch(console.error)
+main().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})

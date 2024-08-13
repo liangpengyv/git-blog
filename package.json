@@ -5,11 +5,13 @@
     "node": ">=20.9.0"
   },
   "description": "",
-  "main": "index.js",
+  "bin": {
+    "git-blog": "dist/bundle.js"
+  },
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development node scripts/index",
-    "build": "NODE_ENV=production node scripts/index"
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -35,12 +37,16 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "express": "^4.19.2",
     "globals": "^15.9.0",
     "open": "^10.1.0",
-    "prettier": "3.3.3"
+    "prettier": "3.3.3",
+    "rollup": "^4.20.0"
   }
 }
