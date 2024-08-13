@@ -6,12 +6,16 @@ import { marked } from 'marked'
 import express from 'express'
 import open from 'open'
 
-const TEMPLATES_DIR = 'templates'
-const OUTPUT_DIR = 'public'
+import {
+  TEMPLATES_DIR,
+  OUTPUT_DIR,
+  GITHUB_REST_API_VERSION,
+} from '../constants/project'
+import { github } from '../config.json'
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 
-async function getIssuesTotalCount(owner, repo) {
+async function getIssuesTotalCount() {
   const query = `
     query($owner: String!, $repo: String!) {
       repository(owner: $owner, name: $repo) {
@@ -21,11 +25,10 @@ async function getIssuesTotalCount(owner, repo) {
       }
     }
   `
-  const variables = {
-    owner,
-    repo,
-  }
-  const response = await octokit.graphql(query, variables)
+  const response = await octokit.graphql(query, {
+    owner: github.owner,
+    repo: github.repo,
+  })
   return response.repository.issues.totalCount
 }
 
@@ -39,9 +42,13 @@ function initOutputDir() {
 }
 
 async function getIssues() {
-  const response = await octokit.request(
-    'GET /repos/liangpengyv/git-blog/issues',
-  )
+  const response = await octokit.request('GET /repos/{owner}/{repo}/issues', {
+    owner: github.owner,
+    repo: github.repo,
+    headers: {
+      'X-GitHub-Api-Version': GITHUB_REST_API_VERSION,
+    },
+  })
   return response.data
 }
 
@@ -49,8 +56,8 @@ async function getIssueComments(issueNumber) {
   const response = await octokit.request(
     'GET /repos/{owner}/{repo}/issues/{issue_number}/comments',
     {
-      owner: 'liangpengyv',
-      repo: 'git-blog',
+      owner: github.owner,
+      repo: github.repo,
       issue_number: issueNumber,
     },
   )
@@ -74,8 +81,8 @@ async function convertPosts(issues) {
   return posts
 }
 
-function loadTemplate(tempalteName) {
-  return fs.readFileSync(path.join(TEMPLATES_DIR, tempalteName), 'utf-8')
+function loadTemplate(templateName) {
+  return fs.readFileSync(path.join(TEMPLATES_DIR, templateName), 'utf-8')
 }
 
 function saveHtml(content, filename) {
@@ -129,10 +136,7 @@ function runServer() {
 
 async function main() {
   console.log('Generating...')
-  console.log(
-    'totalCount: ',
-    await getIssuesTotalCount('liangpengyv', 'git-blog'),
-  )
+  console.log('totalCount: ', await getIssuesTotalCount())
   initOutputDir()
   const issues = await getIssues()
   const posts = await convertPosts(issues)
