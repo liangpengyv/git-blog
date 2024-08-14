@@ -2,8 +2,15 @@
 
 import 'dotenv/config'
 import { Octokit } from 'octokit'
+import fs from 'fs-extra'
 
-import { GITHUB_REST_API_VERSION } from '../constants/project'
+import {
+  GITHUB_REST_API_VERSION,
+  DATA_DIR,
+  DATA_PATH_OF_ISSUES,
+  DATA_PATH_OF_ISSUES_BY_LABEL,
+  DATA_PATH_OF_ISSUES_BY_MILESTONE,
+} from '../constants/project'
 import { github } from '../config.json'
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
@@ -116,10 +123,23 @@ async function getIssuesByMilestone() {
   return issuesByMilestone
 }
 
+async function saveAsFile(filePath, data) {
+  await fs.writeJSON(filePath, data, 'utf-8')
+}
+
 async function main() {
-  await getIssues()
-  await getIssuesByLabel()
-  await getIssuesByMilestone()
+  console.log('Fetching GitHub Issues, please wait...')
+
+  if (!(await fs.pathExists(DATA_DIR))) await fs.mkdir(DATA_DIR)
+
+  await saveAsFile(DATA_PATH_OF_ISSUES, await getIssues())
+  await saveAsFile(DATA_PATH_OF_ISSUES_BY_LABEL, await getIssuesByLabel())
+  await saveAsFile(
+    DATA_PATH_OF_ISSUES_BY_MILESTONE,
+    await getIssuesByMilestone(),
+  )
+
+  console.log('Fetched GitHub Issues successfully')
 }
 
 main().catch((error) => {
