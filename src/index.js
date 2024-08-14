@@ -19,7 +19,7 @@ async function getIssuesTotalCount() {
   const query = `
     query($owner: String!, $repo: String!) {
       repository(owner: $owner, name: $repo) {
-        issues {
+        issues(states: OPEN) {
           totalCount
         }
       }
