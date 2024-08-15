@@ -1,0 +1,27 @@
+<% for( let i = 0; i < issues.length; i++ ) { %>
+<div>
+  <a href="/post/<%= issues[i].id %>.html"><%= issues[i].title %></a>
+</div>
+<% } %>
+
+<div style="display: flex">
+  <% if (currentPage !== 1) { %>
+  <div>
+    <% if (currentPage === 2) { %>
+    <a href="/">上一页</a>
+    <% } else { %>
+    <a href="/page/<%= currentPage - 1 %>.html">上一页</a>
+    <% } %>
+  </div>
+  <% } %>
+
+  <div>
+    <%= currentPage %>
+    /
+    <%= pageCount %>
+  </div>
+
+  <% if (currentPage !== pageCount) { %>
+  <div><a href="/page/<%= currentPage + 1 %>.html">下一页</a></div>
+  <% } %>
+</div>

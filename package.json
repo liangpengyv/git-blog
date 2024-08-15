@@ -31,6 +31,7 @@
   "homepage": "https://github.com/liangpengyv/git-blog#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "fs-extra": "^11.2.0",
     "marked": "^13.0.2",
     "octokit": "^4.0.2"
@@ -47,6 +48,7 @@
     "globals": "^15.9.0",
     "open": "^10.1.0",
     "prettier": "3.3.3",
+    "prettier-plugin-ejs": "^1.0.3",
     "rollup": "^4.20.0"
   }
 }

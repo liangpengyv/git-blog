@@ -59,6 +59,9 @@ async function getIssueComments(issueNumber) {
       owner: github.owner,
       repo: github.repo,
       issue_number: issueNumber,
+      headers: {
+        'X-GitHub-Api-Version': GITHUB_REST_API_VERSION,
+      },
     },
   )
   return response.data

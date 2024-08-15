@@ -1,0 +1,17 @@
+<h2><%= title %></h2>
+
+<div><%- content %></div>
+
+<div>
+  <% comments.forEach(comment => { %>
+  <div>
+    <img
+      src="<%= comment.avatar %>"
+      alt="user avatar"
+      style="width: 20px; height: 20px"
+    />
+    <span><%= comment.username %></span>
+    <p><%- comment.content %></p>
+  </div>
+  <% }) %>
+</div>

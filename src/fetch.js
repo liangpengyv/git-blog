@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import 'dotenv/config'
 import { Octokit } from 'octokit'
 import fs from 'fs-extra'
@@ -28,8 +26,27 @@ async function getIssues() {
       },
     },
   )
-  for await (const { data } of issuesIterator) {
-    issues.push(...data)
+  for await (const { data: currentPageIssues } of issuesIterator) {
+    for (let i = 0; i < currentPageIssues.length; i++) {
+      const comments = []
+      const commentsIterator = octokit.paginate.iterator(
+        octokit.rest.issues.listComments,
+        {
+          owner: github.owner,
+          repo: github.repo,
+          issue_number: currentPageIssues[i].number,
+          per_page: 100,
+          headers: {
+            'X-GitHub-Api-Version': GITHUB_REST_API_VERSION,
+          },
+        },
+      )
+      for await (const { data: currentPageComments } of commentsIterator) {
+        comments.push(...currentPageComments)
+      }
+      currentPageIssues[i].comments_data = comments
+    }
+    issues.push(...currentPageIssues)
   }
 
   return issues
@@ -123,8 +140,8 @@ async function getIssuesByMilestone() {
   return issuesByMilestone
 }
 
-async function saveAsFile(filePath, data) {
-  await fs.writeJSON(filePath, data, 'utf-8')
+async function saveDataAsFile(filePath, data) {
+  await fs.writeJSON(filePath, data, { encoding: 'utf-8' })
 }
 
 async function main() {
@@ -132,9 +149,9 @@ async function main() {
 
   if (!(await fs.pathExists(DATA_DIR))) await fs.mkdir(DATA_DIR)
 
-  await saveAsFile(DATA_PATH_OF_ISSUES, await getIssues())
-  await saveAsFile(DATA_PATH_OF_ISSUES_BY_LABEL, await getIssuesByLabel())
-  await saveAsFile(
+  await saveDataAsFile(DATA_PATH_OF_ISSUES, await getIssues())
+  await saveDataAsFile(DATA_PATH_OF_ISSUES_BY_LABEL, await getIssuesByLabel())
+  await saveDataAsFile(
     DATA_PATH_OF_ISSUES_BY_MILESTONE,
     await getIssuesByMilestone(),
   )

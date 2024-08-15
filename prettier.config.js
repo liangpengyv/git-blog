@@ -1,4 +1,5 @@
 export default {
+  plugins: ['prettier-plugin-ejs'],
   endOfLine: 'lf',
   printWidth: 80,
   tabWidth: 2,
