@@ -28,7 +28,7 @@ async function generatePage(issues) {
       path.join(TEMPLATES_DIR, 'page.ejs'),
       i === 0
         ? path.join(OUTPUT_DIR, 'index.html')
-        : path.join(OUTPUT_DIR, 'page', `${i + 1}.html`),
+        : path.join(OUTPUT_DIR, 'page', `${i + 1}`, 'index.html'),
       {
         issues: issues.slice(theme.perPage * i, theme.perPage * (i + 1)),
         pageCount,
@@ -42,7 +42,7 @@ async function generatePost(issues) {
   for (const issue of issues) {
     await generateHtmlFromTemplate(
       path.join(TEMPLATES_DIR, 'post.ejs'),
-      path.join(OUTPUT_DIR, 'post', `${issue.id}.html`),
+      path.join(OUTPUT_DIR, 'post', `${issue.id}`, 'index.html'),
       {
         title: issue.title,
         content: marked(issue.body ?? ''),
