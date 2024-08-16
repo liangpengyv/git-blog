@@ -25,7 +25,7 @@ async function generatePage(issues) {
   const pageCount = Math.ceil(issues.length / theme.perPage)
   for (let i = 0; i < pageCount; i++) {
     await generateHtmlFromTemplate(
-      path.join(TEMPLATES_DIR, 'page.ejs'),
+      path.join(TEMPLATES_DIR, 'page', 'index.ejs'),
       i === 0
         ? path.join(OUTPUT_DIR, 'index.html')
         : path.join(OUTPUT_DIR, 'page', `${i + 1}`, 'index.html'),
@@ -38,11 +38,11 @@ async function generatePage(issues) {
   }
 }
 
-async function generatePost(issues) {
+async function generatePosts(issues) {
   for (const issue of issues) {
     await generateHtmlFromTemplate(
-      path.join(TEMPLATES_DIR, 'post.ejs'),
-      path.join(OUTPUT_DIR, 'post', `${issue.id}`, 'index.html'),
+      path.join(TEMPLATES_DIR, 'posts', 'index.ejs'),
+      path.join(OUTPUT_DIR, 'posts', `${issue.id}`, 'index.html'),
       {
         title: issue.title,
         content: marked(issue.body ?? ''),
@@ -66,7 +66,7 @@ async function main() {
   )
 
   await generatePage(issues)
-  await generatePost(issues)
+  await generatePosts(issues)
 
   console.log('Generated pages successfully')
 }
