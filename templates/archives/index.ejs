@@ -1,0 +1,12 @@
+<%- include('../_partials/navbar') %>
+
+<% Array.from(postsByMonthMap.entries()).forEach(([month, posts]) => { %>
+<details open>
+  <summary><%= month %></summary>
+  <% for( let i = 0; i < posts.length; i++ ) { %>
+  <div>
+    <a href="/posts/<%= posts[i].id %>"><%= posts[i].title %></a>
+  </div>
+  <% } %>
+</details>
+<% }) %>
