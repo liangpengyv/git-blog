@@ -4,31 +4,11 @@
   "engines": {
     "node": ">=20.9.0"
   },
-  "description": "",
-  "bin": {
-    "git-blog": "dist/bundle.js"
-  },
   "type": "module",
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/liangpengyv/git-blog.git"
-  },
-  "keywords": [
-    "Blog",
-    "Issue",
-    "Action",
-    "Pages"
-  ],
-  "author": "liangpengyv",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/liangpengyv/git-blog/issues"
-  },
-  "homepage": "https://github.com/liangpengyv/git-blog#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -50,5 +30,19 @@
     "prettier": "3.3.3",
     "prettier-plugin-ejs": "^1.0.3",
     "rollup": "^4.20.0"
-  }
+  },
+  "author": "liangpengyv",
+  "description": "",
+  "keywords": [
+    "Blog",
+    "Issue",
+    "Action",
+    "Pages"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangpengyv/git-blog.git"
+  },
+  "homepage": "https://github.com/liangpengyv/git-blog#readme",
+  "license": "MIT"
 }
