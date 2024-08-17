@@ -87,10 +87,12 @@ async function getIssuesByLabel() {
     for await (const { data } of issuesIterator) {
       issues.push(...data)
     }
-    issuesByLabel.push({
-      label,
-      issues,
-    })
+    if (issues.length > 0) {
+      issuesByLabel.push({
+        label,
+        issues,
+      })
+    }
   }
 
   return issuesByLabel
@@ -131,10 +133,13 @@ async function getIssuesByMilestone() {
     for await (const { data } of issuesIterator) {
       issues.push(...data)
     }
-    issuesByMilestone.push({
-      milestone,
-      issues,
-    })
+
+    if (issues.length > 0) {
+      issuesByMilestone.push({
+        milestone,
+        issues,
+      })
+    }
   }
 
   return issuesByMilestone

@@ -30,7 +30,7 @@ async function generatePage(issues) {
         ? path.join(OUTPUT_DIR, 'index.html')
         : path.join(OUTPUT_DIR, 'page', `${i + 1}`, 'index.html'),
       {
-        issues: issues.slice(theme.perPage * i, theme.perPage * (i + 1)),
+        posts: issues.slice(theme.perPage * i, theme.perPage * (i + 1)),
         pageCount,
         currentPage: i + 1,
       },
@@ -56,6 +56,78 @@ async function generatePosts(issues) {
   }
 }
 
+async function generateTags(issuesByLabel) {
+  await generateHtmlFromTemplate(
+    path.join(TEMPLATES_DIR, 'tags', 'index.ejs'),
+    path.join(OUTPUT_DIR, 'tags', 'index.html'),
+    {
+      tags: issuesByLabel.map((item) => item.label),
+    },
+  )
+
+  for (const issuesOfOneLabel of issuesByLabel) {
+    const { label, issues } = issuesOfOneLabel
+    const pageCount = Math.ceil(issues.length / theme.perPage)
+    for (let i = 0; i < pageCount; i++) {
+      await generateHtmlFromTemplate(
+        path.join(TEMPLATES_DIR, 'tags', 'page.ejs'),
+        i === 0
+          ? path.join(OUTPUT_DIR, 'tags', `${label.id}`, 'index.html')
+          : path.join(
+              OUTPUT_DIR,
+              'tags',
+              `${label.id}`,
+              'page',
+              `${i + 1}`,
+              'index.html',
+            ),
+        {
+          posts: issues.slice(theme.perPage * i, theme.perPage * (i + 1)),
+          tag: label,
+          pageCount,
+          currentPage: i + 1,
+        },
+      )
+    }
+  }
+}
+
+async function generateCategories(issuesByMilestone) {
+  await generateHtmlFromTemplate(
+    path.join(TEMPLATES_DIR, 'categories', 'index.ejs'),
+    path.join(OUTPUT_DIR, 'categories', 'index.html'),
+    {
+      categories: issuesByMilestone.map((item) => item.milestone),
+    },
+  )
+
+  for (const issuesOfOneMilestone of issuesByMilestone) {
+    const { milestone, issues } = issuesOfOneMilestone
+    const pageCount = Math.ceil(issues.length / theme.perPage)
+    for (let i = 0; i < pageCount; i++) {
+      await generateHtmlFromTemplate(
+        path.join(TEMPLATES_DIR, 'categories', 'page.ejs'),
+        i === 0
+          ? path.join(OUTPUT_DIR, 'categories', `${milestone.id}`, 'index.html')
+          : path.join(
+              OUTPUT_DIR,
+              'categories',
+              `${milestone.id}`,
+              'page',
+              `${i + 1}`,
+              'index.html',
+            ),
+        {
+          posts: issues.slice(theme.perPage * i, theme.perPage * (i + 1)),
+          category: milestone,
+          pageCount,
+          currentPage: i + 1,
+        },
+      )
+    }
+  }
+}
+
 async function main() {
   console.log('Generating pages, please wait...')
 
@@ -67,6 +139,8 @@ async function main() {
 
   await generatePage(issues)
   await generatePosts(issues)
+  await generateTags(issuesByLabel)
+  await generateCategories(issuesByMilestone)
 
   console.log('Generated pages successfully')
 }

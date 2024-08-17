@@ -1,5 +1,7 @@
 <%- include('../_partials/navbar') %>
 
+<p>标签：<%= tag.name %></p>
+
 <% for( let i = 0; i < posts.length; i++ ) { %>
 <div>
   <a href="/posts/<%= posts[i].id %>"><%= posts[i].title %></a>
@@ -10,9 +12,9 @@
   <% if (currentPage !== 1) { %>
   <div>
     <% if (currentPage === 2) { %>
-    <a href="/">上一页</a>
+    <a href="/tags/<%= tag.id %>">上一页</a>
     <% } else { %>
-    <a href="/page/<%= currentPage - 1 %>">上一页</a>
+    <a href="/tags/<%= tag.id %>/page/<%= currentPage - 1 %>">上一页</a>
     <% } %>
   </div>
   <% } %>
@@ -24,6 +26,8 @@
   </div>
 
   <% if (currentPage !== pageCount) { %>
-  <div><a href="/page/<%= currentPage + 1 %>">下一页</a></div>
+  <div>
+    <a href="/tags/<%= tag.id %>/page/<%= currentPage + 1 %>">下一页</a>
+  </div>
   <% } %>
 </div>

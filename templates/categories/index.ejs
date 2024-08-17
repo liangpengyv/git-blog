@@ -1,0 +1,5 @@
+<%- include('../_partials/navbar') %>
+
+<% categories.forEach(category => { %>
+<a href="/categories/<%= category.id %>"><%= category.title %></a>
+<% }) %>

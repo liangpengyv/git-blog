@@ -1,0 +1,5 @@
+<%- include('../_partials/navbar') %>
+
+<% tags.forEach(tag => { %>
+<a href="/tags/<%= tag.id %>"><%= tag.name %></a>
+<% }) %>
