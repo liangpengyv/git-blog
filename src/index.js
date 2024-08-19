@@ -10,7 +10,7 @@ import {
   TEMPLATES_DIR,
   OUTPUT_DIR,
   GITHUB_REST_API_VERSION,
-} from '../constants/project'
+} from './constants/project'
 import { github } from '../config.json'
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })

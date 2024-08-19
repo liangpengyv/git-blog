@@ -8,7 +8,7 @@ import {
   DATA_PATH_OF_ISSUES,
   DATA_PATH_OF_ISSUES_BY_LABEL,
   DATA_PATH_OF_ISSUES_BY_MILESTONE,
-} from '../constants/project'
+} from './constants/project'
 import { github } from '../config.json'
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })

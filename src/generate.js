@@ -9,7 +9,7 @@ import {
   DATA_PATH_OF_ISSUES_BY_LABEL,
   DATA_PATH_OF_ISSUES_BY_MILESTONE,
   OUTPUT_DIR,
-} from '../constants/project'
+} from './constants/project'
 import { theme } from '../config.json'
 
 async function loadDataFromFile(filePath) {
