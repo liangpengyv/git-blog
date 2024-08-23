@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "Node",
     "checkJs": true,
     "outDir": "./out",
     "resolveJsonModule": true,
