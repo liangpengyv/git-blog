@@ -1,3 +1,13 @@
+<div style="text-align: center; margin-bottom: 32px">
+  <p style="font-size: 16px; color: #eebd42">⬇ Next ⬇</p>
+  <p style="font-size: 24px">
+    <span>🎉</span>
+    <a href="https://github.com/fluxpress" target="_blank">FluxPress</a>
+    <span>🎉</span>
+  </p>
+  <p style="font-size: 16px">👏👏👏</p>
+</div>
+
 # git-blog
 
 ## 简介
