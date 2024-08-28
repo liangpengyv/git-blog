@@ -1,11 +1,12 @@
-<div style="text-align: center; margin-bottom: 32px">
-  <p style="font-size: 16px; color: #eebd42">⬇ Next ⬇</p>
-  <p style="font-size: 24px">
+<div align="center">
+  <h3>⬇️ Next ⬇️</h3>
+  <h1>
     <span>🎉</span>
-    <a href="https://github.com/fluxpress" target="_blank">FluxPress</a>
+    <a href="https://github.com/fluxpress">FluxPress</a>
     <span>🎉</span>
-  </p>
-  <p style="font-size: 16px">👏👏👏</p>
+  </h1>
+  <img src="https://avatars.githubusercontent.com/u/178722393?s=200&amp;v=4">
+  <h3>🚀🚀🚀</h3>
 </div>
 
 # git-blog
